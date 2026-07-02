@@ -2,21 +2,11 @@ class Solution {
     int [] visited ;
 
     void transversal(int node, int [][] graph, int n){
-        Queue <Integer> bfs=new LinkedList<>();
 
-        bfs.offer(node);
-
-        while(!bfs.isEmpty()){
-
-            int currNode = bfs.poll();
-
-            for (int i = 0; i < n; i++ ){
-                if (graph[currNode][i]==1 && visited[i] != 1){
-
-                    visited[i] = 1;
-                    bfs.offer(i);
-
-                }
+        for (int i = 0; i < n; i++){
+            if (graph[node][i] == 1 && visited[i] != 1){
+                visited[i]=1;
+                transversal(i, graph, n);
             }
         }
         
