@@ -1,6 +1,5 @@
 class Solution {
-    int [][] visited ;
-    void dfs(int currRow, int currCol, char [][] grid, int [][] visited){
+        void dfs(int currRow, int currCol, char [][] grid, int [][] visited){
         visited[currRow][currCol] = 1;
         int [][] dirs = {{1, 0}, {-1, 0}, {0, 1}, {0,-1}};
         for (int [] dir : dirs){
@@ -13,7 +12,7 @@ class Solution {
   
     }
     public int numIslands(char[][] grid) {
-        visited = new int [grid.length][grid[0].length];
+        int [][] visited = new int [grid.length][grid[0].length];
         int islands=0;
 
         for (int row = 0; row < grid.length; row++ ){
