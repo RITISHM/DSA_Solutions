@@ -39,7 +39,7 @@ class Solution {
 
                 TreeNode curr = levels.poll();
 
-                if (i == size && curr.left == null && curr.right == null) res = curr.val;
+                if (i == size ) res = curr.val;
 
                 if (curr.right != null) levels.offer(curr.right);
                 if (curr.left != null) levels.offer(curr.left);
