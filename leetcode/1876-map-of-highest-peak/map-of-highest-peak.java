@@ -7,8 +7,6 @@ class Solution {
                          {0,1},
                          {-1,0},
                          {0,-1}};
-
-        boolean [][] visited = new boolean [rows][cols];
         Queue <int []> levels = new LinkedList<>();
 
         for (int i = 0; i < rows; i++){
@@ -17,7 +15,9 @@ class Solution {
                 if (isWater[i][j] == 1){
                     isWater[i][j] = 0;
                     levels.offer(new int[] {i,j});
-                    visited[i][j] = true;
+                }
+                else{
+                    isWater[i][j] = -1;
                 }
             }
         }
@@ -36,10 +36,11 @@ class Solution {
 
                     if (nr >= 0 && nr < rows &&
                         nc >= 0 && nc < cols &&
-                        !visited[nr][nc]){
+                        isWater[nr][nc] == -1){
+
                             levels.offer(new int[] {nr,nc});
                             isWater[nr][nc] = isWater[cr][cc] + 1;
-                            visited[nr][nc] =true;
+
                         }
                 }
 
