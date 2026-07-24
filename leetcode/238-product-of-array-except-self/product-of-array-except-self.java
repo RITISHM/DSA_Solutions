@@ -5,12 +5,12 @@ class Solution {
         int [] prefixProd = new  int [nums.length];
         int prefix = 1;
 
-        for (int i = 0; i < nums.length; i++ ){
+        for (int i = nums.length - 1; i >= 0; i-- ){
             suffixProd[i] = suffix;
             suffix *= nums[i];
         } 
 
-        for (int i = nums.length-1; i >= 0; i--){
+        for (int i = 0; i < nums.length; i++ ){
             prefixProd[i] = prefix;
             prefix *= nums[i]; 
         }
