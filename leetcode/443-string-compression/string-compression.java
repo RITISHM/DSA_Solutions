@@ -9,19 +9,15 @@ class Solution {
                 i++;
                 count ++;
             }
-            
-            if (count == 1) {
-                chars[j++] = c;
-                continue;
-            }
 
             chars[j++] = c;
-            String Scount = String.valueOf(count);
-
-            for (char s : Scount.toCharArray()){
-                chars[j++] = s;
+            if (count > 1){
+                for (char s : String.valueOf(count).toCharArray()){
+                    chars[j++] = s;
+                }
             }
         }
+        
         return j;
     }
 }
