@@ -13,7 +13,8 @@ class Solution {
         sum -= nums[i - k];
         sum += nums[i];
 
-        maxAverage = Math.max(maxAverage, ( (double) sum) / k);
+        double average =( (double) sum) / k;
+        maxAverage = maxAverage > average ? maxAverage : average;
        }
 
        return maxAverage;
