@@ -10,8 +10,9 @@ class Solution {
             int currentWater = smallerEdge * (right - left);
             max = Math.max(max, currentWater);
 
-            if (height[ left ] < height[ right ] ) left++;
-            else right --;
+            while( height[left] <= smallerEdge && left < right ) left++ ;
+
+            while( height[right] <= smallerEdge && left < right ) right-- ;
         }
 
         return max;
