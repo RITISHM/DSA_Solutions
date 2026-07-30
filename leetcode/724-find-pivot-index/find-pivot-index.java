@@ -8,11 +8,8 @@ class Solution {
         for (int i = 0; i < nums.length; i++){
             presum += nums[i];
             prefix[i] = presum;
-        }
-
-        for (int i = lastIndex; i >= 0; i--){
-            postsum += nums[i];
-            postfix[i] = postsum; 
+            postsum += nums[lastIndex - i];
+            postfix[lastIndex - i] = postsum;
         }
 
         for (int i = 0; i < nums.length; i++){
