@@ -5,10 +5,13 @@ class Solution {
         for (int i : arr){
             frequency.put(i, frequency.getOrDefault(i, 0) + 1);
         }
+        Set <Integer> frequencies= new HashSet<>();
+        for ( int i : frequency.keySet()){
+            if ( frequencies.contains( frequency.get(i))) return false;
+            frequencies.add( frequency.get(i));
+        }
 
-        Set <Integer> frequencies = new HashSet<>(frequency.values());
-        
-        return frequencies.size() == frequency.size();
+        return true;
             
     }
 }
