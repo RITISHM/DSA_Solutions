@@ -1,44 +1,34 @@
 class Solution {
-    public int longestConsecutive(int[] arr) {
-        if (arr.length == 0) return 0;
-    int res = 1;
-    HashSet <Integer> set = new HashSet<>();
+    public int longestConsecutive(int[] nums) {
 
-    //adding the numbers in set
-    for (int i = 0; i < arr.length; i++ ){
-      set.add(arr[i]);
+        Set <Integer> elements = new HashSet<>();
+        int maxLength = 0; 
 
-    }
+        for (int i : nums){
+            elements.add(i);
+        }
 
-    //main 
-    for (int i = 0; i < arr.length; i++){
-      if (!set.contains(arr[i]))continue;
-      
-      int key = arr[i];
-      int count = 1;
+        for (int i : nums){
 
+            if (!elements.contains(i)) continue;
 
-      //add the count and remove the numbers which are consecutive and grater to key
-      while (set.contains(--key )){
-        set.remove(key);
-        count ++;
-      }
-      key = arr[i];
-      
-      //add the count and remove the numbers which are consecutive and smaller than key
-      while (set.contains(++key)){
-        set.remove(key);
-        count ++;
-      }
+            int element = i;
+            int length = 0;
 
-      //remove the key itself 
-      set.remove(arr[i]);
-      //update the result
-      res = Math.max(count, res);
-    }
-
-
-    System.gc();
-    return res;
+            while(elements.contains( element )){
+                length ++;
+                elements.remove(element);
+                element++;
+            }
+            element = i -1;
+            while(elements.contains( element )){
+                length ++;
+                elements.remove(element);
+                element--;
+            }
+            maxLength = Math.max(maxLength, length);
+        }
+        
+        return maxLength;
     }
 }
