@@ -13,46 +13,26 @@ class Solution {
 
   public ListNode mergeKLists(ListNode [] lists){
     if (lists.length == 0) return null;
-    ListNode a = lists[0];
-    
-    for (int i = 1; i < lists.length; i++){
-      ListNode b = lists[i];
-     
-      ListNode newHead = new ListNode();
-        ListNode curr = newHead;
-        ListNode ptr1 = a;
-        ListNode ptr2 = b;
+    PriorityQueue<ListNode> queue = new PriorityQueue<>((n1, n2) -> n1.val - n2.val);
 
-        while(ptr1 != null && ptr2 != null){
-        if(ptr1.val < ptr2.val){
-            curr.next = ptr1;
-            ptr1 = ptr1.next;
-            curr = curr.next;
-        }
-
-        else{
-            curr.next = ptr2;
-            ptr2 = ptr2.next;
-            curr = curr.next;
-        }
-        }
-
-        while (ptr1 != null){
-            curr.next = ptr1;
-            ptr1 = ptr1.next;
-            curr = curr.next;
-        }
-
-        while (ptr2 != null){
-            curr.next = ptr2;
-            ptr2 = ptr2.next;
-            curr = curr.next;
-        }
-        a = newHead.next;
-
+    for (int i = 0; i < lists.length; i++){
+        if (lists[i] != null)
+        queue.add(lists[i]);
     }
 
-    return a;
+    ListNode newHead = new ListNode();
+    ListNode curr = newHead;
+
+    while(!queue.isEmpty()){
+        curr.next = queue.poll();
+        curr = curr.next;
+        if (curr.next != null){
+            queue.add(curr.next);
+        }
+    }
+    
+
+    return newHead.next;
 
   }
 }
