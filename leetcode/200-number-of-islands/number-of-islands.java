@@ -1,28 +1,50 @@
 class Solution {
-        void dfs(int currRow, int currCol, char [][] grid){
-        grid[currRow][currCol] = '0';
-        int [][] dirs = {{1, 0}, {-1, 0}, {0, 1}, {0,-1}};
-        for (int [] dir : dirs){
-            int row = currRow + dir[0];
-            int col = currCol + dir[1];
-            if (row >= 0 && row < grid.length && col >= 0 && col < grid[0].length && grid[row][col] == '1'){
-                dfs(row, col, grid);
-            }  
-         }
-  
-    }
-    public int numIslands(char[][] grid) {
-        int islands=0;
 
-        for (int row = 0; row < grid.length; row++ ){
-            for (int col  = 0; col < grid[0].length; col++){
-                if (grid[row][col] == '1' ){
-                    islands ++;
-                    dfs(row, col, grid);
+    public void bfs(int row, int col, char [][] grid){
+        int[][] dirs = {{0, 1}, {1,0}, {-1, 0}, {0, -1}};
+        grid[row][col] = '0';
+
+        Queue <int []> queue = new LinkedList <>();
+        queue.offer(new int []{row, col});
+        while(!queue.isEmpty()) {
+
+            int size = queue.size();
+            for (int i = 0; i < size; i++){
+                int [] node = queue.poll();
+                int currRow = node[0];
+                int currCol = node[1];
+
+                for (int[] dir : dirs){
+                    int nextRow = dir [0] + currRow;
+                    int nextCol = dir [1] + currCol;
+                    if (nextRow >= 0 && nextRow < grid.length && 
+                        nextCol >= 0 && nextCol < grid[0].length &&
+                        grid[nextRow][nextCol] == '1'){
+
+                        grid[nextRow][nextCol] ='0';
+                        queue.offer(new int []{nextRow, nextCol});
+
+                    }
                 }
             }
         }
-        return islands;
+    }
 
+    public int numIslands(char[][] grid) {
+        int numIsland = 0;
+        int rows = grid.length;
+        int cols = grid[0].length;
+
+        for (int row = 0; row < rows; row++){
+            for (int col = 0; col < cols; col++){
+                if (grid[row][col] == '1'){
+                    bfs(row, col, grid);
+                    numIsland++;
+
+                }
+            }
+        }
+
+        return numIsland;
     }
 }
