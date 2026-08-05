@@ -1,34 +1,34 @@
 class Solution {
     public int[][] floodFill(int[][] image, int sr, int sc, int color) {
-        if (image.length == 0 || image[0].length == 0) return image;
+        int srcColor = image[sr][sc];
+        int[][] dirs = {{0 , 1}, {1, 0}, {-1, 0}, {0, -1}};
+        if(image[sr][sc] == color) return image;
+        image[sr][sc] = color;
 
-        int [][] dir = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
-        int scolor = image [sr][sc];
+        Queue<int[]> nodes = new LinkedList<>();
 
-        if (scolor == color)return image;
+        nodes.offer(new int[] {sr, sc});
 
-        Queue <int []> flooded_node = new LinkedList<>();
-        flooded_node.offer(new int[] {sr, sc});
-
-        while(!flooded_node.isEmpty()){
-            int size = flooded_node.size();
+        while(!nodes.isEmpty()){
+            int size = nodes.size();
             for (int i = 0; i < size; i++){
-                int [] curr = flooded_node.poll();
-                image[curr[0]][curr[1]]=color;
-
-                for (int j = 0; j < dir.length; j++ ){
-                    int currRow = curr[0] + dir[j][0];
-                    int currCol = curr[1] + dir[j][1];
-                    if (currRow  >= 0 && currRow < image.length  && currCol >= 0 && currCol < image[0].length && image[currRow][currCol] == scolor){
-                        flooded_node.offer(new int[] {currRow, currCol});
-
+                int [] node = nodes.poll();
+                int row = node[0];
+                int col = node[1];
+                for(int [] dir : dirs){
+                    int nextRow = row + dir[0];
+                    int nextCol = col + dir[1];
+                    if (nextRow >= 0 && nextRow < image.length && nextCol >= 0 && nextCol < image[0].length && image[nextRow][nextCol] == srcColor){
+                        nodes.offer(new int[] {nextRow , nextCol});
+                        image[nextRow][nextCol] = color;
                     }
-                } 
-            } 
+                }
+            }
+        } 
 
-        }
+        return image;
 
-        return image ;
         
+
     }
 }
