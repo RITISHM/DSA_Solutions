@@ -5,25 +5,13 @@ class Solution {
     public void solve(char[][] board) {
         int rows = board.length, cols = board[0].length;
         int [][] dirs = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
-        boolean [][] visited = new boolean [rows][cols];
         Queue<int []> nodes = new LinkedList<>();
 
         for(int row = 0; row < rows; row ++){
             for(int col = 0; col < cols; col++){
                 boolean invalid = false;
-                if(board[row][col] == 'O'){
-                    for(int [] dir:dirs){
-                        int nextRow = row + dir[0];
-                        int nextCol = col + dir[1];
-                        if( nextRow < 0 || nextRow >= rows || nextCol < 0 || nextCol >= cols) {
-                            invalid = true;
-                            break;
-                        }
-                    }
-                }
-
-                if(invalid){
-                    visited[row][col] = true;
+                if(board[row][col] == 'O' && (row == 0 || row == rows - 1 || col == 0 || col == cols - 1 )){
+                    board[row][col] = '#';
                     nodes.offer(new int []{row, col});
                 }
             }
@@ -44,8 +32,8 @@ class Solution {
                     int nextCol = col + dir[1];
                     if( nextRow >= 0 && nextRow < rows &&
                      nextCol >= 0 && nextCol < cols && 
-                     !visited[nextRow][nextCol] && board[nextRow][nextCol] == 'O') {
-                        visited[nextRow][nextCol] = true;
+                     board[nextRow][nextCol] != '#' && board[nextRow][nextCol] == 'O') {
+                        board[nextRow][nextCol] = '#';
                         nodes.add(new int []{nextRow, nextCol});
                     }
                 }
@@ -57,7 +45,8 @@ class Solution {
         
         for(int row = 0; row < rows; row ++){
             for(int col = 0; col < cols; col++){
-                if(!visited[row][col]) board[row][col] = 'X';
+                if(board[row][col] == '#') board[row][col] = 'O';
+                else board[row][col] = 'X';
             }
         }
     
