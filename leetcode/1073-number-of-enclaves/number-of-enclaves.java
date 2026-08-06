@@ -36,11 +36,11 @@ class Solution {
                     if(row == 0 || row == (rows - 1) || col == 0 || col == (cols - 1)){
                         grid[row][col] = 0;
                         nodes.offer(new int []{row, col});
-                        bfs(nodes, grid);
                     }
                 }
             }
         }
+        bfs(nodes, grid);
 
         for(int row = 0; row < rows; row++){
             for(int col = 0; col < cols; col++){
