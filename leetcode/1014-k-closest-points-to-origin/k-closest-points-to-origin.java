@@ -12,7 +12,8 @@ class Solution {
     }
 
     public int quickSelect(int L, int R,int [] orignalIndex, int[][] points){
-
+        int randomIndex = L + (int)(Math.random() * (R - L + 1));
+        swap(orignalIndex, L, randomIndex);
         int pivotIndex = L;
         int i = L + 1;
         int j = R;
