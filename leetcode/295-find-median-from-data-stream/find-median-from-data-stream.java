@@ -4,7 +4,7 @@ class MedianFinder {
     int pivot;
     public MedianFinder() {
         upperElements = new PriorityQueue<>();
-        lowerElements = new PriorityQueue<>(Collections.reverseOrder());
+        lowerElements = new PriorityQueue<>((a , b) -> b - a);
         pivot = 0;
     }
 
@@ -18,24 +18,30 @@ class MedianFinder {
 
         if(num > pivot){
             upperElements.offer(num);
-            if(upperElements.size() > lowerElements.size()){
-                lowerElements.offer (upperElements.poll());
-            }
         }
         else{
             lowerElements.offer(num);
-            if(lowerElements.size() > upperElements.size()){
-                upperElements.offer(lowerElements.poll());
-            }
         }
-        pivot = lowerElements.peek();
+        int size1 = upperElements.size();
+        int size2 = lowerElements.size();
+
+        if((size1 + size2) % 2 == 0){
+            while(upperElements.size() != lowerElements.size()){
+                if(upperElements.size() > lowerElements.size()){
+                    lowerElements.offer (upperElements.poll());
+                }
+                else{
+                    upperElements.offer(lowerElements.poll());
+                }
+            }
+            pivot = lowerElements.peek();
+        }
 
     }
     
     public double findMedian() {
         int size1 = upperElements.size();
         int size2 = lowerElements.size();
-        
         double median = 0;
         if(size1 == size2){
             int a = upperElements.peek();
