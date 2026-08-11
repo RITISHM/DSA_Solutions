@@ -4,33 +4,45 @@ class Solution {
     public void setZeroes(int[][] matrix) {
         int rows = matrix.length;
         int cols = matrix[0].length;
-        boolean[] visitedRows = new boolean[rows];
-        boolean[] visitedCols = new boolean[cols];
+        boolean flag1 = false;
+        boolean flag2 = false;
 
-
-        for (int row = 0; row < rows; row++){
+        for(int row = 0; row < rows; row++){
             for(int col = 0; col < cols; col++){
-                if(matrix[row][col] == 0){
-                    visitedRows[row] = true;
-                    visitedCols[col] = true;
+                if(matrix[row][col] == 0) {
+                    if(row == 0) flag1 = true;
+                    if(col == 0) flag2 = true;
+                    matrix[row][0] = 0;
+                    matrix[0][col] = 0;
                 }
             }
         }
-        
 
-        for(int row = 0; row < rows; row++){
-            if(visitedRows[row]){
+        for(int row = 1; row < rows; row++){
+            if(matrix[row][0] == 0){
                 for(int col = 0; col < cols; col++){
                     matrix[row][col] = 0;
                 }
             }
         }
-        for(int col = 0; col < cols; col++){
-            if(visitedCols[col]){
+
+        for(int col = 1; col < cols; col++){
+            if(matrix[0][col] == 0){
                 for(int row = 0; row < rows; row++){
                     matrix[row][col] = 0;
                 }
             }
         }
+        if(flag1){
+            for(int col = 0; col < cols; col++){
+                matrix[0][col] = 0;
+            }
+        }
+        if(flag2){
+            for(int row = 0; row < rows; row++){
+                matrix[row][0] = 0;
+            }
+        }
+
     }
 }
