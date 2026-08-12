@@ -1,4 +1,5 @@
 class Solution {
+    Random rand = new Random();
     void swap(int i, int j, int [] nums){
         int temp = nums[i];
         nums[i] = nums[j];
@@ -6,6 +7,9 @@ class Solution {
     }
 
     int quickSelect(int L, int R, int [] nums){
+        int randomIndex = L + rand.nextInt(R - L + 1);
+        swap(L, randomIndex, nums);
+
         int pivot = L;
         int i = L+1;
         int j = R;
