@@ -19,7 +19,7 @@ class Solution {
                 set.add(num*5);
             }
         }
-    int val = (int)((long) heap.poll());
+    int val =  heap.poll().intValue();
         return val;
 
     }
