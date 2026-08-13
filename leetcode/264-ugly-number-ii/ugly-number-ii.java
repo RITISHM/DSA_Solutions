@@ -19,7 +19,7 @@ class Solution {
                 set.add(num*5);
             }
         }
-    int val = Math.toIntExact( heap.poll());
+    int val = (int)((long) heap.poll());
         return val;
 
     }
