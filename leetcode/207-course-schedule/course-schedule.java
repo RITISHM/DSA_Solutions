@@ -1,47 +1,52 @@
-import java.util.*;
-
 class Solution {
+
+    void createMatrix(int[][] prerequisites, List<List<Integer>> matrix){
+        for(int[] prerequisite : prerequisites){
+            int j = prerequisite[0];
+            int i = prerequisite[1];
+            matrix.get(i).add(j);
+        }
+    }
+
+
+    public boolean dfs(int course, List<List<Integer>> matrix, Set<Integer> set,boolean[] visited){
+        
+        for(int i = 0; i < matrix.get(course).size(); i++ ){
+            int current = matrix.get(course).get(i);
+            if(set.contains(current)) return false;
+            if(visited[current]) continue;
+
+            set.add(current);
+            visited[current] = true;
+            if(!dfs(current, matrix, set, visited)) return false;
+            set.remove(current);
+        }
+        
+
+        return true;
+    }
+
+
     public boolean canFinish(int numCourses, int[][] prerequisites) {
-        // 1. Build adjacency list and in-degree array
         List<List<Integer>> matrix = new ArrayList<>();
-        for (int i = 0; i < numCourses; i++) {
+
+        for(int i= 0; i < numCourses; i++){
             matrix.add(new ArrayList<>());
+        }   
+
+        createMatrix(prerequisites, matrix);
+        boolean[] visited = new boolean[numCourses];
+
+        for(int i = 0; i < numCourses; i++ ){
+            if(visited[i]) continue;
+
+            Set <Integer> set = new HashSet<>();
+            set.add(i);
+            visited[i] = true;
+
+            if(!dfs(i, matrix, set, visited))return false;
+
         }
-        
-        int[] inDegree = new int[numCourses];
-        
-        for (int[] prerequisite : prerequisites) {
-            int course = prerequisite[0];
-            int prereq = prerequisite[1];
-            matrix.get(prereq).add(course); // prereq -> course
-            inDegree[course]++;             // course depends on prereq
-        }
-        
-        // 2. Add all nodes with 0 in-degree to the queue
-        Queue<Integer> queue = new LinkedList<>();
-        for (int i = 0; i < numCourses; i++) {
-            if (inDegree[i] == 0) {
-                queue.offer(i);
-            }
-        }
-        
-        // 3. Process the graph using BFS
-        int completedCourses = 0;
-        
-        while (!queue.isEmpty()) {
-            int current = queue.poll();
-            completedCourses++;
-            
-            // Reduce in-degree for all neighboring courses
-            for (int neighbor : matrix.get(current)) {
-                inDegree[neighbor]--;
-                if (inDegree[neighbor] == 0) {
-                    queue.offer(neighbor);
-                }
-            }
-        }
-        
-        // 4. If we processed all courses, there is no cycle
-        return completedCourses == numCourses;
+        return true;
     }
 }
