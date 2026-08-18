@@ -1,52 +1,43 @@
 class Solution {
-
-    void createMatrix(int[][] prerequisites, List<List<Integer>> matrix){
-        for(int[] prerequisite : prerequisites){
-            int j = prerequisite[0];
-            int i = prerequisite[1];
-            matrix.get(i).add(j);
-        }
-    }
-
-
-    public boolean dfs(int course, List<List<Integer>> matrix, Set<Integer> set,boolean[] visited){
+    public boolean canFinish(int numCourses, int[][] prerequisites) {
+        // 1. Build adjacency list (graph)
+        List<List<Integer>> matrix = new ArrayList<>();
+        for (int i = 0; i < numCourses; i++) {
+            matrix.add(new ArrayList<>());
+        }   
         
-        for(int i = 0; i < matrix.get(course).size(); i++ ){
-            int current = matrix.get(course).get(i);
-            if(set.contains(current)) return false;
-            if(visited[current]) continue;
-
-            set.add(current);
-            visited[current] = true;
-            if(!dfs(current, matrix, set, visited)) return false;
-            set.remove(current);
+        for (int[] prerequisite : prerequisites) {
+            int course = prerequisite[0];
+            int prereq = prerequisite[1];
+            matrix.get(prereq).add(course); // prereq -> course
         }
-        
 
+        // 0 = unvisited, 1 = visiting (in current path), 2 = visited (safe)
+        int[] visited = new int[numCourses];
+
+        for (int i = 0; i < numCourses; i++) {
+            if (visited[i] == 0) {
+                if (!hasCycle(i, matrix, visited)) {
+                    return false; // Cycle detected
+                }
+            }
+        }
         return true;
     }
 
+    private boolean hasCycle(int course, List<List<Integer>> matrix, int[] visited) {
+        if (visited[course] == 1) return false; // Cycle found in current path
+        if (visited[course] == 2) return true;  // Already checked and safe
 
-    public boolean canFinish(int numCourses, int[][] prerequisites) {
-        List<List<Integer>> matrix = new ArrayList<>();
+        visited[course] = 1; // Mark as visiting
 
-        for(int i= 0; i < numCourses; i++){
-            matrix.add(new ArrayList<>());
-        }   
-
-        createMatrix(prerequisites, matrix);
-        boolean[] visited = new boolean[numCourses];
-
-        for(int i = 0; i < numCourses; i++ ){
-            if(visited[i]) continue;
-
-            Set <Integer> set = new HashSet<>();
-            set.add(i);
-            visited[i] = true;
-
-            if(!dfs(i, matrix, set, visited))return false;
-
+        for (int nextCourse : matrix.get(course)) {
+            if (!hasCycle(nextCourse, matrix, visited)) {
+                return false;
+            }
         }
+
+        visited[course] = 2; // Mark as fully visited/safe
         return true;
     }
 }
