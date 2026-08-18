@@ -1,56 +1,52 @@
-
-
 class Solution {
-    class Pair{
-        int a;
-        int b;
-        Pair(int a, int b){
-            this.a = a;
-            this.b = b;
-        }
-    }
-    
-    public List[] creatAdj( int v, int[][] edges){
-        List <Integer> [] mat = new List [v];
-        for (int i=0; i<v; i++)mat[i]= new ArrayList<>();
-        
-        for (int [] edge : edges){
-            int i = edge[0];
-            int j = edge[1];
-            mat[i].add(j);
-            
-        }
-        return mat;
-    }
-    
-    boolean checkCycle(List <Integer>[] adjMat , int src, boolean [] visited, boolean [] inStack){
-        visited[src]= true;
-        inStack[src] = true;
 
-        for ( int i : adjMat [src]){
-            if (!visited[i]){
-            if (checkCycle (adjMat, i, visited, inStack)) return true;
-            }
-            else if (inStack[i]){
-                return true;
-            }
+    void createMatrix(int[][] prerequisites, List<List<Integer>> matrix){
+        for(int[] prerequisite : prerequisites){
+            int j = prerequisite[0];
+            int i = prerequisite[1];
+            matrix.get(i).add(j);
         }
-        inStack[src] = false;
-        return false;
-        
     }
-    
-    public boolean canFinish(int V, int[][] edges) {
+
+
+    public boolean dfs(int course, List<List<Integer>> matrix, Set<Integer> set,boolean[] visited){
         
-        List [] adjMat = creatAdj(V , edges);
-        boolean [] visited = new boolean [V];
-        boolean [] inStack = new boolean [V];
-        for(int i= 0; i< V; i++){
-            if (visited[i] || adjMat[i] == null)continue;
-            if (checkCycle(adjMat, i, visited, inStack)) return false;
+        for(int i = 0; i < matrix.get(course).size(); i++ ){
+            int current = matrix.get(course).get(i);
+            if(set.contains(current)) return false;
+            if(visited[current]) continue;
+
+            set.add(current);
+            visited[current] = true;
+            if(!dfs(current, matrix, set, visited)) return false;
+            set.remove(current);
         }
         
+
         return true;
-        
+    }
+
+
+    public boolean canFinish(int numCourses, int[][] prerequisites) {
+        List<List<Integer>> matrix = new ArrayList<>();
+
+        for(int i= 0; i < numCourses; i++){
+            matrix.add(new ArrayList<>());
+        }   
+
+        createMatrix(prerequisites, matrix);
+        boolean[] visited = new boolean[numCourses];
+
+        for(int i = 0; i < numCourses; i++ ){
+            if(visited[i]) continue;
+
+            Set <Integer> set = new HashSet<>();
+            set.add(i);
+            visited[i] = true;
+
+            if(!dfs(i, matrix, set, visited))return false;
+
+        }
+        return true;
     }
 }
