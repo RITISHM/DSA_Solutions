@@ -1,6 +1,13 @@
 class Solution {
     
-    public void createAdj(int numCourses, int [][] prerequisites, ArrayList<ArrayList<Integer>> adjList){
+   
+
+    public int[] findOrder(int numCourses, int[][] prerequisites) {
+        
+        ArrayList<ArrayList<Integer>> adjList = new ArrayList<>();
+        Queue <Integer> nodes = new LinkedList<>();
+        int[] inDegree = new int[numCourses];
+
         for (int i = 0; i < numCourses; i++){
             adjList.add(new ArrayList<>());
         }
@@ -10,15 +17,6 @@ class Solution {
             int edgeTo = prerequisite[0];
             adjList.get(edgeFrom).add(edgeTo);
         }
-    }
-
-    public int[] findOrder(int numCourses, int[][] prerequisites) {
-        
-        ArrayList<ArrayList<Integer>> adjList = new ArrayList<>();
-        Queue <Integer> nodes = new LinkedList<>();
-        int[] inDegree = new int[numCourses];
-
-        createAdj(numCourses, prerequisites, adjList);
 
         for (int i = 0; i < numCourses; i++){
             for (int j : adjList.get(i)){
