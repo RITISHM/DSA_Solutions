@@ -1,52 +1,53 @@
 class Solution {
 
-    void createMatrix(int[][] prerequisites, List<List<Integer>> matrix){
+    public void createAdj(int numCourses, int [][] prerequisites, ArrayList<ArrayList<Integer>> adjMatrix){
+        for (int i = 0; i < numCourses; i++){
+            adjMatrix.add( new ArrayList<>());
+        }
+
         for(int[] prerequisite : prerequisites){
-            int j = prerequisite[0];
-            int i = prerequisite[1];
-            matrix.get(i).add(j);
+            int fromEdge = prerequisite[1];
+            int toEdge = prerequisite[0];
+            adjMatrix.get(fromEdge).add(toEdge);
         }
     }
 
 
-    public boolean dfs(int course, List<List<Integer>> matrix, Set<Integer> set,boolean[] visited){
-        
-        for(int i = 0; i < matrix.get(course).size(); i++ ){
-            int current = matrix.get(course).get(i);
-            if(set.contains(current)) return false;
-            if(visited[current]) continue;
-
-            set.add(current);
-            visited[current] = true;
-            if(!dfs(current, matrix, set, visited)) return false;
-            set.remove(current);
-        }
-        
-
-        return true;
-    }
-
+    
 
     public boolean canFinish(int numCourses, int[][] prerequisites) {
-        List<List<Integer>> matrix = new ArrayList<>();
 
-        for(int i= 0; i < numCourses; i++){
-            matrix.add(new ArrayList<>());
+        ArrayList<ArrayList<Integer>> adjMatrix = new ArrayList<>();
+        createAdj(numCourses, prerequisites, adjMatrix);
+
+        int [] inDegree = new int[numCourses];
+        int res = 0;
+
+        for(int i = 0 ; i < numCourses; i++){
+            for (int j : adjMatrix.get(i)){
+                inDegree[j]++;
+            }
         }   
 
-        createMatrix(prerequisites, matrix);
-        boolean[] visited = new boolean[numCourses];
+        Queue <Integer> nodes = new LinkedList<>();     
 
-        for(int i = 0; i < numCourses; i++ ){
-            if(visited[i]) continue;
+        for(int i = 0; i < numCourses; i++){
+            if(inDegree[i] == 0){
+                nodes.offer(i);
+            }
+        }
 
-            Set <Integer> set = new HashSet<>();
-            set.add(i);
-            visited[i] = true;
+        while(!nodes.isEmpty()){
+            int node = nodes.poll();
+            res++;
 
-            if(!dfs(i, matrix, set, visited))return false;
+            for(int j : adjMatrix.get(node)){
+                inDegree[j]--;
+                if (inDegree[j] == 0) nodes.offer(j);
+            }
 
         }
-        return true;
+
+        return (res == numCourses);
     }
 }
