@@ -20,18 +20,16 @@ class Solution {
  
         List<List<Integer>> reversedGraph = createReverseAdj(graph);
 
-        int[] indegree = new int [graph.length];
+        int[] outdegree = new int [graph.length];
 
-        for (int i = 0; i < reversedGraph.size(); i++){
-            for(int j : reversedGraph.get(i)){
-                indegree[j]++;
-            }
+        for (int i = 0; i < graph.length; i++){
+            outdegree[i] = graph[i].length;
         } 
 
         Queue <Integer> nodes = new LinkedList<>();
 
-        for (int i = 0; i < indegree.length; i++){
-            if(indegree[i] == 0) nodes.add(i);
+        for (int i = 0; i < outdegree.length; i++){
+            if(outdegree[i] == 0) nodes.add(i);
         }
 
         List<Integer> res = new ArrayList<>();
@@ -41,8 +39,8 @@ class Solution {
             res.add(node);
 
             for (int i : reversedGraph.get(node)){
-                indegree[i]--;
-                if(indegree[i] == 0) nodes.add(i);
+                outdegree[i]--;
+                if(outdegree[i] == 0) nodes.add(i);
             }
         }
 
