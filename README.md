@@ -17,5 +17,5 @@ Welcome to my DSA solutions portfolio! This repository contains my solved proble
 | --- | --- | --- | --- | --- | --- |
 | 1 | [Common Nodes in Two BSTs](https://practice.geeksforgeeks.org/problems/print-common-nodes-in-bst/1) | GeeksforGeeks | Medium | JAVA | [Code](./GFG/Medium/0_CommonNodesInTwoBSTs.java) |
 | 2 | [Flood fill Algorithm](https://practice.geeksforgeeks.org/problems/flood-fill-algorithm1856/1) | GeeksforGeeks | Medium | JAVA | [Code](./GFG/Medium/0_FloodFillAlgorithm.java) |
-| 3 | [Undirected Graph Cycle](https://practice.geeksforgeeks.org/problems/detect-cycle-in-an-undirected-graph/1) | GeeksforGeeks | Medium | JAVA | [Code](./GFG/Medium/0_UndirectedGraphCycle.java) |
+| 3 | [Shortest Path in Unweighted Graph](https://practice.geeksforgeeks.org/problems/shortest-path-in-undirected-graph-having-unit-distance/1) | GeeksforGeeks | Medium | JAVA | [Code](./GFG/Medium/0_ShortestPathInUnweightedGraph.java) |
 <!-- COMMITDSA_END -->
