@@ -21,6 +21,10 @@ class Solution {
 
             if(currEffort > effort[r][c]) continue;
 
+            if (r == rows - 1 && c == cols - 1){
+                return currEffort;
+            }
+
             for(int[] dir : dirs){
                 int nr = r + dir[0];
                 int nc = c + dir[1];
