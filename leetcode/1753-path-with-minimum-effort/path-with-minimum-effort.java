@@ -1,4 +1,15 @@
 class Solution {
+    class Tup{
+        int r;
+        int c;
+        int effort;
+        Tup(int r, int c, int effort){
+            this.r = r;
+            this.c = c;
+            this.effort = effort;
+        }
+    }
+
     public int minimumEffortPath(int[][] heights) {
         int rows = heights.length;
         int cols = heights[0].length;
@@ -8,16 +19,18 @@ class Solution {
         int[][] effort = new int [rows][cols];
         for (int[] row : effort) Arrays.fill(row, Integer.MAX_VALUE);
 
-        PriorityQueue <int[]> pq = new PriorityQueue<>((a, b) -> Integer.compare(a[2], b[2]) );
+        PriorityQueue <Tup> pq = new PriorityQueue<>((a, b) -> Integer.compare(a.effort, b.effort) );
 
-        pq.add(new int[] {0,0,0});
+        pq.add(new Tup(0,0,0));
         effort[0][0] = 0;
 
         while(!pq.isEmpty()){
-            int [] node = pq.poll();
-            int r = node[0];
-            int c = node[1];
-            int currEffort = node[2];
+            Tup node = pq.poll();
+            int r = node.r;
+            int c = node.c;
+            int currEffort = node.effort;
+
+            if(currEffort > effort[r][c]) continue;
 
             if (r == rows - 1 && c == cols - 1){
                 return currEffort;
@@ -32,7 +45,7 @@ class Solution {
 
                         if (effort[nr][nc] > nextEffort){
                             effort[nr][nc] = nextEffort;
-                            pq.add(new int[]{nr, nc, nextEffort});
+                            pq.add(new Tup(nr, nc, nextEffort));
                         }
                     }
             }
