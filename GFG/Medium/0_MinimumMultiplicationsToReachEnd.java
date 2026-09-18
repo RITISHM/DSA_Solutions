@@ -11,7 +11,7 @@ class Solution {
         Queue<int[]> q = new LinkedList<>();
         
         q.add(new int[]{start, 0});
-
+        dist[start] = 0;
         while(!q.isEmpty()){
             int[] node = q.poll();
             if(node[1] > dist[node[0]]) continue;
