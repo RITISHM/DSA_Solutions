@@ -20,15 +20,14 @@ class Solution {
             Arrays.fill(row, Integer.MAX_VALUE);
         }
 
-        PriorityQueue<int[]> pq =
-            new PriorityQueue<>((a, b) -> Integer.compare(a[2], b[2]));
+        Queue<int[]> q = new LinkedList<>();
 
         dist[0][0] = 1;
-        pq.offer(new int[]{0, 0, 1});
+        q.offer(new int[]{0, 0, 1});
 
-        while (!pq.isEmpty()) {
+        while (!q.isEmpty()) {
 
-            int[] node = pq.poll();
+            int[] node = q.poll();
 
             int row = node[0];
             int col = node[1];
@@ -59,7 +58,7 @@ class Solution {
 
                         dist[nextRow][nextCol] = newDist;
 
-                        pq.offer(
+                        q.offer(
                             new int[]{nextRow, nextCol, newDist}
                         );
                     }
