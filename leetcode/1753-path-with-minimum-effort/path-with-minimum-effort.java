@@ -19,8 +19,6 @@ class Solution {
             int c = node[1];
             int currEffort = node[2];
 
-            if(currEffort > effort[r][c]) continue;
-
             if (r == rows - 1 && c == cols - 1){
                 return currEffort;
             }
