@@ -7,15 +7,17 @@
 class Solution {
     int minCost(int[] height) {
         int n = height.length;
+        if (n == 1) return 0;
         int[] dp = new int [n];
-        dp[0] = 0;
-        
-        for (int i = 1; i < n; i++){
-            dp[i] = dp[i-1] + Math.abs(height[i] - height[i-1]);
-            if(i== 1) continue;
-            dp[i] = Math.min(dp[i-2] + Math.abs(height[i] - height[i-2]), dp[i]);
+        int prev1 = Math.abs(height[0] - height[1]) ;
+        int prev2 = 0;
+        for (int i = 2; i < n; i++){
+            int curr = Math.min(prev1 + Math.abs(height[i] - height[i-1]),
+                                prev2 + Math.abs(height[i] - height[i-2]));
+            prev2 = prev1;
+            prev1 = curr;
         }
         
-        return dp[n-1];
+        return prev1;
     }
 }
