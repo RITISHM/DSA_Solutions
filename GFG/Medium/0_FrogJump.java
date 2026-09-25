@@ -5,31 +5,17 @@
  */
 
 class Solution {
-    int[] dp;
-    
-    int minHealth(int i, int[] arr){
-        if (i == 0) return 0;
-        if (dp[i] != -1) return dp[i];
-        
-        int left = minHealth(i - 1, arr) + Math.abs(arr[i] - arr[i-1]);
-        
-        if(i == 1){
-            dp[i] = left;
-            return left;
-        }
-        
-        int right = minHealth(i - 2, arr) + Math.abs(arr[i] - arr[i-2]);
-        
-        dp[i] = Math.min(left, right);
-        return dp[i];
-        
-    }
-    
     int minCost(int[] height) {
         int n = height.length;
-        dp = new int[n];
-        Arrays.fill(dp, -1);
-        return minHealth(n-1, height);
+        int[] dp = new int [n];
+        dp[0] = 0;
         
+        for (int i = 1; i < n; i++){
+            dp[i] = dp[i-1] + Math.abs(height[i] - height[i-1]);
+            if(i== 1) continue;
+            dp[i] = Math.min(dp[i-2] + Math.abs(height[i] - height[i-2]), dp[i]);
+        }
+        
+        return dp[n-1];
     }
 }
