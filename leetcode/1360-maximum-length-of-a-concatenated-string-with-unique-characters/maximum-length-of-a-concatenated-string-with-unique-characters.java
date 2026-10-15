@@ -1,29 +1,32 @@
 class Solution {
 
-    boolean isValid(String curr){
-        int [] mask = new int[26];
+    int getMask(String curr) {
+        int mask = 0;
         for (char c : curr.toCharArray()){
-            int index = c - 'a';
-            if (mask[index] == 1) return false;
-            mask[index] = 1;
+            int position = c -'a';
+            if ((mask & (1 << position)) != 0) return -1;
+
+            mask = mask | (1 << position);          
         }
-        return true;
+        return mask;
     }
 
-    int helper(String curr, List <String> arr , int next){
-        int n  = arr.size();
-        int size = curr.length();
-        for (int i = next ; i < n; i ++){
-            String temp = curr + arr.get(i);
-            if(isValid(temp)){
-                int res = helper(temp, arr, i +1);
-                if (res > 0 ) size = Math.max(size, res);
+    int helper(List<String> arr, int startIndex, int mask) {
+        int n = arr.size();
+        int size = Integer.bitCount(mask);
+
+        for (int i = startIndex; i < n; i++) {
+            int currMask = getMask(arr.get(i));
+            if(currMask == -1 || (mask & currMask) !=0 ) continue;
+            else {
+                currMask = currMask | mask;
+                size = Math.max(size, helper(arr, i + 1, currMask));
             }
         }
         return size;
     }
 
     public int maxLength(List<String> arr) {
-        return helper("", arr, 0);
+        return helper(arr, 0, 0);
     }
 }
