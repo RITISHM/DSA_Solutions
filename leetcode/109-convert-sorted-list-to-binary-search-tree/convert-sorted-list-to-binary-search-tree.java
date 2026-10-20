@@ -24,25 +24,33 @@
  * }
  */
 class Solution {
-   
-
-    TreeNode helper(ListNode start, ListNode last){
-        if(start == null || start == last) return null;
-        ListNode slow = start; 
-        ListNode fast = start;
-
-        while(fast != last && fast.next != last){
-            slow = slow.next;
-            fast = fast.next.next;
+    private ListNode current ;
+    public TreeNode sortedListToBST(ListNode head) {
+        if (head == null) return null;
+        int n = 0;
+        current = head;
+        while (head != null) {
+            n++;
+            head = head.next;
         }
-        TreeNode root = new TreeNode(slow.val);
-        root.left = helper(start, slow);
-        root.right = helper(slow.next, last);
-        return root;
+
+        return buildBst (0, n-1);
+
     }
 
+    TreeNode buildBst(int start, int end){
+        if (start > end) return null;
 
-    public TreeNode sortedListToBST(ListNode head) {
-        return helper(head , null);
+        int mid = start + (end - start)/2;
+
+        TreeNode left = buildBst(start, mid -1);
+        TreeNode root = new TreeNode(current.val);
+        current = current.next;
+        TreeNode right = buildBst(mid + 1, end);
+
+        root.left = left;
+        root.right = right;
+
+        return root;
     }
 }
