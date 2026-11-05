@@ -14,67 +14,53 @@
  * }
  */
 class Solution {
-    int maxColumn;
-    int minColumn;
-
-    class Node{
+    class Point implements Comparable<Point> {
+        int row;
         int col;
-        TreeNode node;
-        Node(int col, TreeNode node){
+        int val;
+        Point(int val, int row, int col){
+            this.val = val;
+            this.row = row;
             this.col = col;
-            this.node = node;
+        }
+
+ 
+        public int compareTo( Point b) {
+            if (this.col != b.col) return Integer.compare(this.col, b.col);
+            else if (this.row != b.row) return Integer.compare(this.row, b.row);
+            else return Integer.compare(this.val, b.val);
         }
     }
 
-    void traversal(TreeNode root, HashMap <Integer, List<Integer>> map){
-        if (root == null) return;
-
-        Queue <Node> q = new LinkedList<>();
-        q.add(new Node(0, root));
-
-        while(!q.isEmpty()) {
-            int size = q.size();
-            HashMap <Integer, List<Integer>> levelMap = new HashMap<>();
-
-            for (int i = 0; i < size; i++){
-                Node curr = q.poll();
-                int col = curr.col;
-                TreeNode node = curr.node;
-                minColumn = Math.min(col, minColumn); 
-                maxColumn = Math.max(col, maxColumn); 
-
-                if (!levelMap.containsKey(col)) levelMap.put(col, new ArrayList<>());
-                levelMap.get(col).add(node.val);
-
-                if (node.right != null){
-                    q.add(new Node(col + 1, node.right));
-                }
-                if (node.left != null){
-                    q.add(new Node(col - 1, node.left));
-                }
-            }
-            for (int i : levelMap.keySet()){
-                Collections.sort(levelMap.get(i));
-                
-                if (!map.containsKey(i)) map.put(i, new ArrayList<>());
-                map.get(i).addAll(levelMap.get(i));
-            }
-        }
-
-    }
 
     public List<List<Integer>> verticalTraversal(TreeNode root) {
-        maxColumn = 0;
-        minColumn = 0;
-        HashMap <Integer, List<Integer>> map = new HashMap<>();
-        traversal(root, map);
+        List<Point> list = new ArrayList<>();
+
+        dfs(root, 0, 0, list);
+
+        Collections.sort(list);
+
         List<List<Integer>> res = new ArrayList<>();
+        int prevCol = -1000;
+        List currList = null;
 
+        for (Point point : list){
+            if (point.col != prevCol){
+                prevCol = point.col;
+                currList = new ArrayList<>();
+                res.add(currList);
+            }
 
-        for (int i = minColumn; i <= maxColumn; i++){
-            res.add(map.get(i));
+            currList.add(point.val);
         }
-
         return res;
+    }
+
+    void dfs(TreeNode root, int row, int col, List<Point> list){
+        if (root == null) return;
+
+        list.add(new Point(root.val, row, col));
+        dfs(root.left, row + 1, col - 1, list);
+        dfs(root.right, row + 1, col + 1, list);
     }
 }
