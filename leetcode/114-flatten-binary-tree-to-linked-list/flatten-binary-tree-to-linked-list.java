@@ -1,36 +1,32 @@
-// Note: we will take the right part and then put it on the right most side of the left part and do this untill each node is processed.
-
 class Solution {
     public void flatten(TreeNode root) {
         if (root == null) return;
 
         TreeNode curr = root;
-        while(curr != null) {
-            TreeNode rightMost = curr.left;
-
-            //if the left of the curr is null
-            if (rightMost == null) {
+        while (curr != null) {
+            // If there is no left child, we can just move to the right subtree
+            if (curr.left == null) {
                 curr = curr.right;
                 continue;
             }
 
-            //now we will transverse to the right most node
-            while (rightMost != null && rightMost.right != null){
-                rightMost = rightMost.right;
+            // Find the rightmost node of the left subtree (the in-order predecessor)
+            TreeNode predecessor = curr.left;
+            while (predecessor.right != null) {
+                predecessor = predecessor.right;
             }
 
-            //we will put the right of the curr to rightMost right
-            rightMost.right = curr.right;
+            // Connect the original right subtree to the rightmost node of the left subtree
+            predecessor.right = curr.right;
 
-            //we will point the right reference of the curr to its left
+            // Move the entire left subtree to the right side
             curr.right = curr.left;
             
-            //we will clear the left reference to null as we have relocated the left as needed
+            // Clear the left reference
             curr.left = null;
 
-            //we will now move the curr to the right as the next node need to be processed
+            // Move to the next node
             curr = curr.right;
         }
-
     }
 }
