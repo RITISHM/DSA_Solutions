@@ -1,25 +1,31 @@
 class Solution {
     public boolean canCross(int[] stones) {
         int n = stones.length;
-        HashMap<Integer, Set<Integer>> dp = new HashMap<>();
+        Set<Integer> [] dp = new HashSet[n];
 
-        for (int i : stones) {
-            dp.put(i, new HashSet<>());
+        for (int i = 0; i < n; i++){
+            dp[i] = new HashSet<>();
         }
-        dp.get(0).add(0);
+        dp[0].add(0);
+        for (int i = 0; i < n; i++) {
+            for (int lastJump : dp[i]) {
+                int key = stones[i];
+                int jump1 = Arrays.binarySearch(stones,lastJump - 1 + key);
+                int jump2 = Arrays.binarySearch(stones,lastJump  + key);
+                int jump3 = Arrays.binarySearch(stones,lastJump + 1 + key);
 
-        for (int key : stones) {
-            for (int lastJump : dp.get(key)) {
-                if (lastJump - 1 > 0 && dp.containsKey(lastJump - 1 + key)) {
-                    dp.get(lastJump - 1 + key).add(lastJump - 1);
+                if (lastJump - 1 > 0 && jump1 >= 0){
+                    dp[jump1].add(lastJump - 1);
                 }
-                if (dp.containsKey(lastJump + key)) {
-                    dp.get(lastJump + key).add(lastJump);
+                if (jump2 > 0){
+                    dp[jump2].add(lastJump);
                 }
-                if (dp.containsKey(lastJump + 1 + key)) {
-                    dp.get(lastJump + 1 + key).add(lastJump + 1);
+
+                if (jump3 > 0){
+                    dp[jump3].add(lastJump + 1);
                 }
-                if (dp.get(stones[n - 1]).size() > 0) {
+        
+                if (dp[n-1].size() > 0) {
                     return true;
                 }
             }
