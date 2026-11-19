@@ -1,49 +1,30 @@
 class Solution {
-    private boolean canCross(int index, int lastJump, int[] stones, int[][] dp, HashMap<Integer, Integer> map) {
-        if (index == stones.length - 1)
-            return true;
+    public boolean canCross(int[] stones) {
+        int n = stones.length;
+        HashMap<Integer, Set<Integer>> dp = new HashMap<>();
 
-        if (dp[index][lastJump] != -1)
-            return dp[index][lastJump] == 1 ? true : false;
-
-        int curr = stones[index];
-        boolean res = false;
-        boolean next = map.containsKey(curr + lastJump + 1);
-        if (next) {
-            int nextIndex = map.get(curr + lastJump + 1);
-            res = res || canCross(nextIndex, lastJump + 1, stones, dp, map);
+        for (int i : stones) {
+            dp.put(i, new HashSet<>());
         }
+        dp.get(0).add(0);
 
-        next = map.containsKey(curr + lastJump);
-        if (next) {
-            int nextIndex = map.get(curr + lastJump);
-            res = res || canCross(nextIndex, lastJump, stones, dp, map);
-        }
-
-        if (lastJump - 1 > 0) {
-            next = map.containsKey(curr + lastJump - 1);
-            if (next) {
-                int nextIndex = map.get(curr + lastJump - 1);
-                res = res || canCross(nextIndex, lastJump - 1, stones, dp, map);
+        for (int key : stones) {
+            for (int lastJump : dp.get(key)) {
+                if (lastJump - 1 > 0 && dp.containsKey(lastJump - 1 + key)) {
+                    dp.get(lastJump - 1 + key).add(lastJump - 1);
+                }
+                if (dp.containsKey(lastJump + key)) {
+                    dp.get(lastJump + key).add(lastJump);
+                }
+                if (dp.containsKey(lastJump + 1 + key)) {
+                    dp.get(lastJump + 1 + key).add(lastJump + 1);
+                }
+                if (dp.get(stones[n - 1]).size() > 0) {
+                    return true;
+                }
             }
         }
+        return false;
 
-        dp[index][lastJump] = res ? 1 : 0;
-        return res;
-    }
-
-    public boolean canCross(int[] stones) {
-        if (stones[1] != 1)
-            return false;
-        int[][] dp = new int[stones.length][stones.length];
-        for (int[] i : dp)
-            Arrays.fill(i, -1);
-
-        HashMap<Integer, Integer> map = new HashMap<>();
-        for (int i = 0; i < stones.length; i++) {
-            map.put(stones[i], i);
-        }
-
-        return canCross(1, 1, stones, dp, map);
     }
 }
