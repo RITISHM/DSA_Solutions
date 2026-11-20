@@ -1,23 +1,19 @@
 class Solution {
-    private int minimumTotal(int row, int col, int m, List<List<Integer>> triangle, int[][] dp){
-        if (row == m - 1) return triangle.get(row).get(col);
-        if (dp[row][col] != Integer.MAX_VALUE) return dp[row][col];
-
-        int move2 = minimumTotal(row + 1, col, m, triangle, dp);
-        int move1 = minimumTotal(row + 1, col + 1, m, triangle, dp);
-        int cost = Math.min(move1, move2) + triangle.get(row).get(col);
-
-        dp[row][col] = cost;
-        return cost;
-    }
-
     public int minimumTotal(List<List<Integer>> triangle) {
         int m = triangle.size();
-        int[][] dp = new int[m][m];
-        for(int[] i: dp){
-            Arrays.fill(i, Integer.MAX_VALUE);
+        int[] dp = new int[m];
+        for (int i = 0; i < m; i++){
+            dp[i] = triangle.get(m-1).get(i);
         }
 
-        return minimumTotal(0, 0, m, triangle, dp);
+        for (int row = m - 2; row >= 0; row--){
+            for (int col = 0; col <= row; col++){
+                int move1 = dp[col];
+                int move2 = dp[col + 1];
+                int cost = Math.min(move1, move2) + triangle.get(row).get(col);
+                dp[col] = cost;
+            }
+        }
+        return dp[0];
     }
 }
