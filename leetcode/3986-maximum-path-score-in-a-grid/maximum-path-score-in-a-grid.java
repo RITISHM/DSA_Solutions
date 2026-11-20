@@ -2,13 +2,13 @@ class Solution {
 
     private int maxPathScore(int row, int col, int k, int[][] grid, int[][][] dp) {
         if (dp[row][col][k] == -1) return -1;
+        if (dp[row][col][k] != -2) return dp[row][col][k];
         
         int current = grid[row][col];
         int cost = current == 0? 0 : 1;
         if(k - cost < 0) return -1;
 
         if (row == grid.length - 1 && col == grid[0].length - 1) return current;
-        if (dp[row][col][k] != -2) return dp[row][col][k];
 
         int right = -1;
         int down = -1;
