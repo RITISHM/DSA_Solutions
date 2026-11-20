@@ -1,12 +1,14 @@
 class Solution {
 
     private int maxPathScore(int row, int col, int k, int[][] grid, int[][][] dp) {
+        if (dp[row][col][k] == -1) return -1;
+        
         int current = grid[row][col];
         int cost = current == 0? 0 : 1;
-        if (dp[row][col][k] == -2) return -1;
         if(k - cost < 0) return -1;
+
         if (row == grid.length - 1 && col == grid[0].length - 1) return current;
-        if (dp[row][col][k] != -1) return dp[row][col][k];
+        if (dp[row][col][k] != -2) return dp[row][col][k];
 
         int right = -1;
         int down = -1;
@@ -17,7 +19,7 @@ class Solution {
             right = maxPathScore(row, col + 1, k - cost, grid, dp);
         }
         if (right == -1 && down == -1){
-            dp[row][col][k] = -2;
+            dp[row][col][k] = -1;
             return -1;
         }
         dp[row][col][k] = Math.max(right, down) + grid[row][col];
@@ -30,7 +32,7 @@ class Solution {
         int[][][]dp = new int[m][n][k+1];
         for (int[][] i: dp){
             for (int[] j: i){
-                Arrays.fill(j, -1);
+                Arrays.fill(j, -2);
             }
         }
 
