@@ -1,7 +1,7 @@
 
 class Solution {
 
-    private int solve(int r1, int c1, int c2,int[][] grid, int[][][] dp) {
+    private int solve(int r1, int c1, int c2,int[][] grid, Integer[][][] dp) {
 
         int m = grid.length;
         int n = grid[0].length;
@@ -17,7 +17,7 @@ class Solution {
         if (r1 == m - 1 && c1 == n - 1)
             return grid[r1][c1];
 
-        if (dp[r1][c1][c2] != -1)
+        if (dp[r1][c1][c2] != null)
             return dp[r1][c1][c2];
 
         // Collect cherries
@@ -45,11 +45,7 @@ class Solution {
         int m = grid.length;
         int n = grid[0].length;
 
-        int[][][] dp = new int[m][n][n];
-
-        for (int[][] a : dp)
-            for (int[] b : a)
-                Arrays.fill(b, -1);
+        Integer[][][] dp = new Integer[m][n][n];
 
         return Math.max(0, solve(0, 0, 0, grid, dp));
     }
