@@ -1,5 +1,5 @@
 class Solution {
-    private int cherryPickup(int row, int col1, int col2,int[][] grid, Integer[][][] dp){
+    private int cherryPickup(int row, int col1, int col2,int[][] grid, int[][][] dp){
         if (col1 < 0 || col1 == grid[0].length || col2 < 0 || col2 == grid[0].length) return 0;
 
         int res = col1 == col2 ? grid[row][col1] : grid[row][col1] + grid[row][col2];
@@ -7,7 +7,7 @@ class Solution {
             return res;
         }
 
-        if (dp[row][col1][col2] != null) return dp[row][col1][col2];
+        if (dp[row][col1][col2] != -1) return dp[row][col1][col2];
 
         int max = 0;
         for (int i = -1; i < 2; i++){
@@ -25,7 +25,15 @@ class Solution {
     public int cherryPickup(int[][] grid) {
         int m = grid.length;
         int n = grid[0].length;
-        Integer[][][] dp = new Integer[m][n][n];     
+        int[][][] dp = new int[m][n][n];
+
+        for (int[][] i : dp){
+            for (int[] j : i){
+                Arrays.fill(j, -1);
+            }
+        }
+
+        
 
         return cherryPickup(0, 0, n-1, grid, dp);
     }
