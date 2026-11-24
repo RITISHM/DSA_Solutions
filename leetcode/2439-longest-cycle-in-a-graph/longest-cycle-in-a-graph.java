@@ -1,25 +1,42 @@
 class Solution {
-    private int dfs(int curr, int seen, int[] edges,int[] visited, Set<Integer> currPath){
-        if(edges[curr] == -1) return -1;
-        if (currPath.contains(curr)) return seen - visited[curr];
-        if (visited[curr]!= 0) return -1;
-
-        currPath.add(curr);
-        visited[curr] = seen;
-        int ret = dfs(edges[curr], ++seen, edges, visited, currPath);
-        currPath.remove(curr);
-        return ret;
-    }
     public int longestCycle(int[] edges) {
-        int max = -1;
-        int[] visited = new int[edges.length];
-        // Arrays.fill(visited, 1);
-        for(int i = 0; i < edges.length; i++){
-            if(edges[i] == -1 || visited[i] != 0) continue;
-            Set <Integer> currPath = new HashSet<>();
-       
-            max = Math.max(max, dfs(i, 1, edges, visited, currPath));
+        int [] indegree = new int[edges.length];
+        for(int i : edges){
+            if (i == -1) continue;
+            indegree[i]++;
         }
-        return max;
+
+        boolean[] visited = new boolean[edges.length];
+        Queue<Integer>  q = new LinkedList<>();
+        for (int i = 0; i < edges.length; i++){
+            if (indegree[i] == 0)q.add(i);
+        }
+
+        while(!q.isEmpty()){
+            int curr = q.poll();
+            visited[curr] = true;
+            int next = edges[curr];
+            if(next == -1) continue;
+
+            indegree[next]--;
+            if (indegree[next]==0)q.add(next);
+        }
+        int res = -1;
+        for (int i = 0; i < edges.length; i++){
+            if(visited[i]) continue;
+            int length =0;
+            int curr = i;
+
+            while(edges[curr] != -1){
+                if (visited[curr]){
+                    res = Math.max(res, length);
+                    break;
+                }
+                length ++;
+                visited[curr] = true;
+                curr = edges[curr];
+            }
+        }
+        return res;
     }
 }
