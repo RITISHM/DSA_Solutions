@@ -18,7 +18,7 @@ class Solution {
             if(edges[i] == -1 || visited[i] != 0) continue;
             Set <Integer> currPath = new HashSet<>();
        
-            max = Math.max(max, dfs(i, 0, edges, visited, currPath));
+            max = Math.max(max, dfs(i, 1, edges, visited, currPath));
         }
         return max;
     }
