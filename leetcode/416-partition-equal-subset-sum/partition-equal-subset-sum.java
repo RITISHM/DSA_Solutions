@@ -16,8 +16,6 @@ class Solution {
     public boolean canPartition(int[] nums) {
         int sum = 0;
         int n = nums.length;
-        int[][] dp = new int[n][20001];
-        for(int[] i: dp) Arrays.fill(i, -1);
 
         for (int i = 0; i < nums.length; i++){
             sum += nums[i];
@@ -25,6 +23,8 @@ class Solution {
         if(sum % 2 !=0) return false;
         sum /= 2;
 
+        int[][] dp = new int[n][sum+1];
+        for(int[] i: dp) Arrays.fill(i, -1);
         return canPartition(n-1, sum, nums, dp);
     }
 }
